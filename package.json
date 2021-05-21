@@ -7,14 +7,16 @@
     "test": "jest",
     "dev": "ts-node-dev -r tsconfig-paths/register   --poll --inspect --transpile-only  --ignore-watch node_modules src/shared/infra/http/server.ts",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "seed:specialy": "ts-node-dev src/shared/infra/typeorm/seed/specialties.ts"
+    "seed:specialy": "ts-node-dev  -r tsconfig-paths/register src/shared/infra/typeorm/seed/specialties.ts"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "pg": "^8.6.0",
     "reflect-metadata": "^0.1.13",
+    "tsyringe": "^4.5.0",
     "typeorm": "^0.2.32",
     "uuid": "^8.3.2"
   },

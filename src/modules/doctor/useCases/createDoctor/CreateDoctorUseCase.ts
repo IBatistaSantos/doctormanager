@@ -1,7 +1,10 @@
-import { ICreateDoctorDTO } from "@modules/doctor/dtos/ICreateDoctorDTO";
+import { container } from "tsyringe";
+
 import { Doctor } from "@modules/doctor/entities/Doctor";
+import { IContactRepository } from "@modules/doctor/repositories/IContactRepository";
 import { IDoctorRepository } from "@modules/doctor/repositories/IDoctorRepository";
 import { ISpecialtyRepository } from "@modules/doctor/repositories/ISpecialtyRepository";
+import { CreateAddressUseCase } from "@modules/doctor/useCases/createAddress/CreateAddressUseCase";
 import { AppError } from "@shared/errors/AppError";
 
 interface IRequest {
@@ -10,7 +13,7 @@ interface IRequest {
   cep: string;
   specialties: string[];
   contact?: {
-    ddd: number;
+    ddd: string;
     number: string;
     type_contact: string;
   };
@@ -19,7 +22,8 @@ interface IRequest {
 class CreateDoctorUseCase {
   constructor(
     private doctorRepository: IDoctorRepository,
-    private specialtyRepository: ISpecialtyRepository
+    private specialtyRepository: ISpecialtyRepository,
+    private contactRepository: IContactRepository
   ) {}
   async execute({
     name,
@@ -38,6 +42,10 @@ class CreateDoctorUseCase {
       throw new AppError("The doctor needs to have more than one specialty");
     }
 
+    const addressUseCase = container.resolve(CreateAddressUseCase);
+
+    const address = await addressUseCase.execute(cep);
+
     const specialtyRegistered = await this.specialtyRepository.finByIds(
       specialties
     );
@@ -46,6 +54,15 @@ class CreateDoctorUseCase {
       CRM,
       specialties: specialtyRegistered,
     });
+
+    if (contact) {
+      await this.contactRepository.create({
+        ddd: contact.ddd,
+        number: contact.number,
+        doctor_id: doctor.id,
+        type_contact: contact.type_contact,
+      });
+    }
 
     return doctor;
   }
