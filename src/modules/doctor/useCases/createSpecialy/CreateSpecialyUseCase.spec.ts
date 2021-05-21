@@ -1,6 +1,6 @@
 import { AppError } from "@shared/errors/AppError";
 
-import { SpecialtyRepositoryInMemory } from "../repositories/in-memory/SpecialyRepositoryInMemory";
+import { SpecialtyRepositoryInMemory } from "../../repositories/in-memory/SpecialyRepositoryInMemory";
 import { CreateSpecialtyUseCase } from "./CreateSpecialtyUseCase";
 
 let specialtyRepository: SpecialtyRepositoryInMemory;

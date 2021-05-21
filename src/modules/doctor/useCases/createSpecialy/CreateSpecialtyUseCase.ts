@@ -1,11 +1,12 @@
 import { AppError } from "@shared/errors/AppError";
 
-import { Specialty } from "../entities/Specialty";
-import { ISpecialtyRepository } from "../repositories/ISpecialtyRepository";
+import { Specialty } from "../../entities/Specialty";
+import { ISpecialtyRepository } from "../../repositories/ISpecialtyRepository";
 
 interface IRequest {
   name: string;
 }
+
 class CreateSpecialtyUseCase {
   constructor(private specialtyRepository: ISpecialtyRepository) {}
   async execute({ name }: IRequest): Promise<Specialty> {

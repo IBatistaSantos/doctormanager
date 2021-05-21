@@ -7,6 +7,13 @@ class SpecialtyRepositoryInMemory implements ISpecialtyRepository {
   async findByName(name: string): Promise<Specialty | undefined> {
     return this.specialty.find((specialy) => specialy.name === name);
   }
+
+  async finByIds(ids: string[]): Promise<Specialty[]> {
+    const allSpecialty = this.specialty.filter((specialty) =>
+      ids.includes(specialty.id as string)
+    );
+    return allSpecialty;
+  }
   async create(name: string): Promise<Specialty> {
     const specialy = new Specialty();
 
