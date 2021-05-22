@@ -12,8 +12,18 @@ class DoctorRepository implements IDoctorRepository {
   constructor() {
     this.repository = getRepository(DoctorTypeorm);
   }
-  async create({ name, CRM, specialties }: ICreateDoctorDTO): Promise<Doctor> {
-    const doctor = this.repository.create({ name, CRM, specialties });
+  async create({
+    name,
+    CRM,
+    specialties,
+    address_id,
+  }: ICreateDoctorDTO): Promise<Doctor> {
+    const doctor = this.repository.create({
+      name,
+      CRM,
+      specialties,
+      address_id,
+    });
     await this.repository.save(doctor);
     return doctor;
   }

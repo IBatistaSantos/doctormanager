@@ -1,12 +1,16 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
   OneToMany,
+  OneToOne,
   PrimaryColumn,
 } from "typeorm";
 
+import { Address } from "@modules/doctor/entities/Address";
 import { Contact } from "@modules/doctor/entities/Contact";
 import { Doctor } from "@modules/doctor/entities/Doctor";
 
@@ -27,6 +31,13 @@ class DoctorTypeorm extends Doctor {
 
   @PrimaryColumn()
   CRM: string;
+
+  @Column()
+  address_id: string;
+
+  @OneToOne(() => Address)
+  @JoinColumn()
+  address: Address;
 
   @OneToMany(() => ContactTypeOrm, (contact) => contact.doctor)
   contacts: Contact[];

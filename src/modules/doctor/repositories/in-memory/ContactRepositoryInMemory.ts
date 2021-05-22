@@ -10,11 +10,12 @@ class ContactRepositoryInMemory implements IContactRepository {
     number,
     type_contact,
     doctor_id,
-  }: ICreateContactDTO): Promise<void> {
+  }: ICreateContactDTO): Promise<Contact> {
     const contact = new Contact();
 
     Object.assign(contact, { ddd, number, type_contact, doctor_id });
     this.contacts.push(contact);
+    return contact;
   }
 }
 

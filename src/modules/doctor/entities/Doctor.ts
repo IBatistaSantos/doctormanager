@@ -7,6 +7,7 @@ class Doctor {
   id: string;
   name: string;
   CRM: string;
+  address_id: string;
   specialties: Specialty[];
   contacts: Contact[];
   created_at: Date;

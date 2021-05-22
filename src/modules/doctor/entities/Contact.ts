@@ -2,16 +2,12 @@ import { v4 as uuidV4 } from "uuid";
 
 import { Doctor } from "./Doctor";
 
-enum TypeContact {
-  celular = "Celular",
-  telefone_fixo = "Telefone fixo",
-}
-
 class Contact {
   id: string;
   ddd: string;
   number: string;
-  type_contact: TypeContact;
+  type_contact: string;
+  doctor_id: string;
   doctor: Doctor;
   created_at: Date;
 

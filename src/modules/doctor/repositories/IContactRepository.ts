@@ -1,4 +1,5 @@
 import { ICreateContactDTO } from "../dtos/ICreateContctDTO";
+import { Contact } from "../entities/Contact";
 
 interface IContactRepository {
   create({
@@ -6,7 +7,7 @@ interface IContactRepository {
     number,
     type_contact,
     doctor_id,
-  }: ICreateContactDTO): Promise<void>;
+  }: ICreateContactDTO): Promise<Contact>;
 }
 
 export { IContactRepository };

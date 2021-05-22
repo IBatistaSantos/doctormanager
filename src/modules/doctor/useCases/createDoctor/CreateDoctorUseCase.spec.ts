@@ -1,3 +1,4 @@
+import { AddressRepositoryInMemory } from "@modules/doctor/repositories/in-memory/AddressRepositoryInMemory";
 import { ContactRepositoryInMemory } from "@modules/doctor/repositories/in-memory/ContactRepositoryInMemory";
 import { DoctorRepositoryInMemory } from "@modules/doctor/repositories/in-memory/DoctorRepositoryInMemory";
 import { SpecialtyRepositoryInMemory } from "@modules/doctor/repositories/in-memory/SpecialyRepositoryInMemory";
@@ -8,6 +9,7 @@ import { CreateDoctorUseCase } from "./CreateDoctorUseCase";
 let specialtyRepository: SpecialtyRepositoryInMemory;
 let doctorRepository: DoctorRepositoryInMemory;
 let contactRepository: ContactRepositoryInMemory;
+let addressRepository: AddressRepositoryInMemory;
 
 let createDoctorUseCase: CreateDoctorUseCase;
 describe("Create Doctor", () => {
@@ -15,10 +17,12 @@ describe("Create Doctor", () => {
     specialtyRepository = new SpecialtyRepositoryInMemory();
     doctorRepository = new DoctorRepositoryInMemory();
     contactRepository = new ContactRepositoryInMemory();
+    addressRepository = new AddressRepositoryInMemory();
     createDoctorUseCase = new CreateDoctorUseCase(
       doctorRepository,
       specialtyRepository,
-      contactRepository
+      contactRepository,
+      addressRepository
     );
   });
   it("should be able to create a new doctor", async () => {
@@ -38,9 +42,10 @@ describe("Create Doctor", () => {
         type_contact: "Celular",
       },
     });
-    console.log(doctor);
+
     expect(doctor).toHaveProperty("id");
     expect(doctor.specialties).toHaveLength(2);
+    expect(doctor).toHaveProperty("address_id");
   });
 
   it("should not be able to create doctor with exists CRM", async () => {

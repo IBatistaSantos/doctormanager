@@ -5,10 +5,15 @@ import { IDoctorRepository } from "../IDoctorRepository";
 
 class DoctorRepositoryInMemory implements IDoctorRepository {
   doctors: Doctor[] = [];
-  async create({ name, CRM, specialties }: ICreateDoctorDTO): Promise<Doctor> {
+  async create({
+    name,
+    CRM,
+    specialties,
+    address_id,
+  }: ICreateDoctorDTO): Promise<Doctor> {
     const doctor = new Doctor();
 
-    Object.assign(doctor, { name, CRM, specialties });
+    Object.assign(doctor, { name, CRM, specialties, address_id });
     this.doctors.push(doctor);
 
     return doctor;

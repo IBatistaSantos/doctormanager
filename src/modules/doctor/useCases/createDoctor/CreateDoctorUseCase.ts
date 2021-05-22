@@ -1,11 +1,14 @@
-import { container } from "tsyringe";
+import "reflect-metadata";
+import { inject, injectable } from "tsyringe";
 
 import { Doctor } from "@modules/doctor/entities/Doctor";
+import { IAddressRepository } from "@modules/doctor/repositories/IAddressRepository";
 import { IContactRepository } from "@modules/doctor/repositories/IContactRepository";
 import { IDoctorRepository } from "@modules/doctor/repositories/IDoctorRepository";
 import { ISpecialtyRepository } from "@modules/doctor/repositories/ISpecialtyRepository";
-import { CreateAddressUseCase } from "@modules/doctor/useCases/createAddress/CreateAddressUseCase";
 import { AppError } from "@shared/errors/AppError";
+
+import { SeachCep } from "../../utils/searchAddressCep";
 
 interface IRequest {
   name: string;
@@ -19,11 +22,17 @@ interface IRequest {
   };
 }
 
+@injectable()
 class CreateDoctorUseCase {
   constructor(
+    @inject("DoctorRepository")
     private doctorRepository: IDoctorRepository,
+    @inject("SpecialtyRepository")
     private specialtyRepository: ISpecialtyRepository,
-    private contactRepository: IContactRepository
+    @inject("ContactRepository")
+    private contactRepository: IContactRepository,
+    @inject("AddressRepository")
+    private addressRepository: IAddressRepository
   ) {}
   async execute({
     name,
@@ -32,6 +41,8 @@ class CreateDoctorUseCase {
     specialties,
     contact,
   }: IRequest): Promise<Doctor> {
+    let addressId;
+    const cepSeach = cep;
     const doctorAlreadyExists = await this.doctorRepository.findByCRM(CRM);
 
     if (doctorAlreadyExists) {
@@ -42,9 +53,20 @@ class CreateDoctorUseCase {
       throw new AppError("The doctor needs to have more than one specialty");
     }
 
-    const addressUseCase = container.resolve(CreateAddressUseCase);
-
-    const address = await addressUseCase.execute(cep);
+    if (cepSeach) {
+      const seachrCep = new SeachCep();
+      const { address, cep, city, neighborhood, uf, complement } =
+        await seachrCep.searchAddressCep(cepSeach);
+      const addressSave = await this.addressRepository.create({
+        address,
+        cep,
+        city,
+        neighborhood,
+        uf,
+        complement,
+      });
+      addressId = addressSave.id;
+    }
 
     const specialtyRegistered = await this.specialtyRepository.finByIds(
       specialties
@@ -53,6 +75,7 @@ class CreateDoctorUseCase {
       name,
       CRM,
       specialties: specialtyRegistered,
+      address_id: addressId,
     });
 
     if (contact) {

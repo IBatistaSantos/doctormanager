@@ -5,6 +5,7 @@ import "express-async-errors";
 
 import "dotenv/config";
 import "../typeorm";
+import "../../container";
 import { AppError } from "@shared/errors/AppError";
 
 const app = express();

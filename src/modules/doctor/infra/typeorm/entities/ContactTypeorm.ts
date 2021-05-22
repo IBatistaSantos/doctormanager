@@ -4,11 +4,6 @@ import { Contact } from "@modules/doctor/entities/Contact";
 
 import { DoctorTypeorm } from "./DoctorTypeorm";
 
-enum TypeContact {
-  celular = "Celular",
-  telefone_fixo = "Telefone fixo",
-}
-
 @Entity("contacts")
 class ContactTypeOrm extends Contact {
   constructor() {
@@ -25,7 +20,7 @@ class ContactTypeOrm extends Contact {
   number: string;
 
   @Column({ type: "enum", enum: ["Celular", "Telefone Fixo"] })
-  type_contact: TypeContact;
+  type_contact: string;
 
   @Column()
   doctor_id: string;
