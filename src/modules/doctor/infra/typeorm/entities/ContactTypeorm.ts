@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 
 import { Contact } from "@modules/doctor/entities/Contact";
 
@@ -26,6 +26,7 @@ class ContactTypeOrm extends Contact {
   doctor_id: string;
 
   @ManyToOne(() => DoctorTypeorm, (doctor) => doctor.contacts)
+  @JoinColumn({ name: "doctor_id" })
   doctor: DoctorTypeorm;
 
   @Column()

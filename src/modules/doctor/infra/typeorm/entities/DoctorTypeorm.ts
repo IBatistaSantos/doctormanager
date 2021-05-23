@@ -10,10 +10,10 @@ import {
   PrimaryColumn,
 } from "typeorm";
 
-import { Address } from "@modules/doctor/entities/Address";
 import { Contact } from "@modules/doctor/entities/Contact";
 import { Doctor } from "@modules/doctor/entities/Doctor";
 
+import { AddressTypeorm } from "./AddressTypeorm";
 import { ContactTypeOrm } from "./ContactTypeorm";
 import { SpecialtyTypeormEntity } from "./SpecialyTypeorm";
 
@@ -26,18 +26,18 @@ class DoctorTypeorm extends Doctor {
   @PrimaryColumn()
   id: string;
 
-  @PrimaryColumn()
+  @Column()
   name: string;
 
-  @PrimaryColumn()
+  @Column()
   CRM: string;
 
   @Column()
   address_id: string;
 
-  @OneToOne(() => Address)
-  @JoinColumn()
-  address: Address;
+  @OneToOne(() => AddressTypeorm)
+  @JoinColumn({ name: "address_id" })
+  address: AddressTypeorm;
 
   @OneToMany(() => ContactTypeOrm, (contact) => contact.doctor)
   contacts: Contact[];

@@ -1,15 +1,18 @@
 import "reflect-metadata";
-
+import "dotenv/config";
 import express, { Request, Response, NextFunction } from "express";
 import "express-async-errors";
-
-import "dotenv/config";
-import "../typeorm";
 import "../../container";
+
 import { AppError } from "@shared/errors/AppError";
 
+import createConnection from "../typeorm";
+import { router } from "./routes";
+
+createConnection();
 const app = express();
 app.use(express.json());
+app.use(router);
 
 app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {
