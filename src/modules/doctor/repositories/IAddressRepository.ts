@@ -10,5 +10,7 @@ interface IAddressRepository {
     neighborhood,
     uf,
   }: ICreateAddressDTO): Promise<Address>;
+
+  delete(id: string): Promise<void>;
 }
 export { IAddressRepository };

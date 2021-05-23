@@ -12,6 +12,7 @@ class AddressRepository implements IAddressRepository {
   constructor() {
     this.repository = getRepository(AddressTypeorm);
   }
+
   async create({
     address,
     cep,
@@ -31,6 +32,10 @@ class AddressRepository implements IAddressRepository {
 
     await this.repository.save(addressSave);
     return addressSave;
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.repository.delete(id);
   }
 }
 
