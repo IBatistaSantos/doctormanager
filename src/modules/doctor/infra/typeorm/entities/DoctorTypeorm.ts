@@ -32,6 +32,9 @@ class DoctorTypeorm extends Doctor {
   @Column()
   CRM: string;
 
+  @Column({ default: true })
+  isActive: boolean;
+
   @Column()
   address_id: string;
 

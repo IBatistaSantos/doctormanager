@@ -16,7 +16,7 @@ class SpecialtyRepository implements ISpecialtyRepository {
     return specialties;
   }
   async findByName(name: string): Promise<Specialty | undefined> {
-    const specialy = await this.repository.findOne({ where: name });
+    const specialy = await this.repository.findOne({ name });
     return specialy;
   }
   async create(name: string): Promise<Specialty> {

@@ -13,13 +13,23 @@ class DoctorRepositoryInMemory implements IDoctorRepository {
   }: ICreateDoctorDTO): Promise<Doctor> {
     const doctor = new Doctor();
 
-    Object.assign(doctor, { name, CRM, specialties, address_id });
+    Object.assign(doctor, {
+      name,
+      CRM,
+      specialties,
+      address_id,
+      isActive: true,
+    });
     this.doctors.push(doctor);
 
     return doctor;
   }
   async findByCRM(crm: string): Promise<Doctor | undefined> {
     return this.doctors.find((doctor) => doctor.CRM === crm);
+  }
+
+  async findById(id: string): Promise<Doctor | undefined> {
+    return this.doctors.find((doctor) => doctor.id === id);
   }
 }
 

@@ -14,7 +14,6 @@ export class CreateDoctor1621613740457 implements MigrationInterface {
           {
             name: "name",
             type: "varchar",
-            isUnique: true,
           },
           {
             name: "CRM",

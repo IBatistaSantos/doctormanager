@@ -1,3 +1,5 @@
+import { inject, injectable } from "tsyringe";
+
 import { AppError } from "@shared/errors/AppError";
 
 import { Specialty } from "../../entities/Specialty";
@@ -7,8 +9,12 @@ interface IRequest {
   name: string;
 }
 
+@injectable()
 class CreateSpecialtyUseCase {
-  constructor(private specialtyRepository: ISpecialtyRepository) {}
+  constructor(
+    @inject("SpecialtyRepository")
+    private specialtyRepository: ISpecialtyRepository
+  ) {}
   async execute({ name }: IRequest): Promise<Specialty> {
     const specialyExists = await this.specialtyRepository.findByName(name);
 

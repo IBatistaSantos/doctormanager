@@ -7,6 +7,7 @@ class Doctor {
   id: string;
   name: string;
   CRM: string;
+  isActive: boolean;
   address_id: string;
   specialties: Specialty[];
   contacts: Contact[];
