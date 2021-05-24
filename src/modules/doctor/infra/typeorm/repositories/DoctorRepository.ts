@@ -35,7 +35,19 @@ class DoctorRepository implements IDoctorRepository {
       doctorsQuery.andWhere("d.CRM = :crm", { crm });
     }
 
-    if (city) {
+    if (city && uf) {
+      doctorsQuery.innerJoinAndSelect(
+        "d.address",
+        "adresses",
+        "adresses.city = :city AND adresses.uf =:uf",
+        {
+          city,
+          uf,
+        }
+      );
+    }
+
+    if (city && !uf) {
       doctorsQuery.leftJoinAndSelect(
         "d.address",
         "adresses",
@@ -43,10 +55,10 @@ class DoctorRepository implements IDoctorRepository {
         {
           city,
         }
-      ).alias;
+      );
     }
 
-    if (uf) {
+    if (uf && !city) {
       doctorsQuery.leftJoinAndSelect(
         "d.address",
         "adresses",
@@ -54,8 +66,9 @@ class DoctorRepository implements IDoctorRepository {
         {
           uf,
         }
-      ).alias;
+      );
     }
+
     if (specialties) {
       doctorsQuery.innerJoinAndSelect(
         "d.specialties",

@@ -8,7 +8,7 @@ import { IDoctorRepository } from "@modules/doctor/repositories/IDoctorRepositor
 import { ISpecialtyRepository } from "@modules/doctor/repositories/ISpecialtyRepository";
 import { AppError } from "@shared/errors/AppError";
 
-import { SeachCep } from "../../utils/searchAddressCep";
+import searchCep from "../../utils/searchAddressCep";
 
 interface IRequest {
   id: string;
@@ -67,6 +67,9 @@ class UpdateDoctorUseCase {
     }
 
     if (specialties) {
+      if (specialties.length < 2) {
+        throw new AppError("The doctor needs to have more than one specialty");
+      }
       const specialtyRegistered = await this.specialtyRepository.finByIds(
         specialties
       );
@@ -79,9 +82,9 @@ class UpdateDoctorUseCase {
         await this.addressRepository.delete(doctorExists.address_id);
       }
 
-      const seachrCep = new SeachCep();
+      const { searchAddressCep } = searchCep;
       const { address, cep, city, neighborhood, uf, complement } =
-        await seachrCep.searchAddressCep(cepSeach);
+        await searchAddressCep(cepSeach);
       const addressSave = await this.addressRepository.create({
         address,
         cep,
