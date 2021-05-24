@@ -1,7 +1,7 @@
 import { ICreateDoctorDTO } from "@modules/doctor/dtos/ICreateDoctorDTO";
 import { Doctor } from "@modules/doctor/entities/Doctor";
 
-import { IDoctorRepository } from "../IDoctorRepository";
+import { IDoctorRepository, IQueryParams } from "../IDoctorRepository";
 
 class DoctorRepositoryInMemory implements IDoctorRepository {
   doctors: Doctor[] = [];
@@ -30,6 +30,22 @@ class DoctorRepositoryInMemory implements IDoctorRepository {
 
   async findById(id: string): Promise<Doctor | undefined> {
     return this.doctors.find((doctor) => doctor.id === id);
+  }
+
+  async findAvailable({ name, crm }: IQueryParams): Promise<Doctor[]> {
+    const doctorAvailable = this.doctors.filter(
+      (doctor) => doctor.isActive === true
+    );
+
+    if (name) {
+      doctorAvailable.filter((doctor) => doctor.name === name);
+    }
+
+    if (crm) {
+      doctorAvailable.filter((doctor) => doctor.CRM === crm);
+    }
+
+    return doctorAvailable;
   }
 }
 

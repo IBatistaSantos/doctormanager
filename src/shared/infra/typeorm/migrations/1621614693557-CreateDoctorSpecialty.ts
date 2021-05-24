@@ -13,11 +13,13 @@ export class CreateDoctorSpecialty1621614693557 implements MigrationInterface {
         columns: [
           {
             name: "doctor_id",
-            type: "uuid",
+            type: "varchar",
+            isNullable: true,
           },
           {
             name: "specialty_id",
-            type: "uuid",
+            type: "varchar",
+            isNullable: true,
           },
           {
             name: "created_at",
@@ -35,8 +37,8 @@ export class CreateDoctorSpecialty1621614693557 implements MigrationInterface {
         referencedTableName: "doctors",
         referencedColumnNames: ["id"],
         columnNames: ["doctor_id"],
-        onDelete: "SET NULL",
-        onUpdate: "SET NULL",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       })
     );
     await queryRunner.createForeignKey(
@@ -46,8 +48,8 @@ export class CreateDoctorSpecialty1621614693557 implements MigrationInterface {
         referencedTableName: "specialties",
         referencedColumnNames: ["id"],
         columnNames: ["specialty_id"],
-        onDelete: "SET NULL",
-        onUpdate: "SET NULL",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       })
     );
   }

@@ -8,7 +8,7 @@ import { IDoctorRepository } from "@modules/doctor/repositories/IDoctorRepositor
 import { ISpecialtyRepository } from "@modules/doctor/repositories/ISpecialtyRepository";
 import { AppError } from "@shared/errors/AppError";
 
-import { SeachCep } from "../../utils/searchAddressCep";
+import seachrCep from "../../utils/searchAddressCep";
 
 interface IRequest {
   name: string;
@@ -54,7 +54,6 @@ class CreateDoctorUseCase {
     }
 
     if (cepSeach) {
-      const seachrCep = new SeachCep();
       const { address, cep, city, neighborhood, uf, complement } =
         await seachrCep.searchAddressCep(cepSeach);
       const addressSave = await this.addressRepository.create({

@@ -27,6 +27,11 @@ class AddressRepositoryInMemory implements IAddressRepository {
     this.adresses.push(addressSave);
     return addressSave;
   }
+
+  async delete(id: string): Promise<void> {
+    const index = this.adresses.findIndex((address) => address.id === id);
+    this.adresses.splice(index, 1);
+  }
 }
 
 export { AddressRepositoryInMemory };

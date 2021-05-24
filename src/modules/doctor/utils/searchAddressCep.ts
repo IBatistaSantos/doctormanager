@@ -10,7 +10,6 @@ interface IResponse {
   uf: string;
   complement?: string;
 }
-
 interface IReturnRequest {
   cep: string;
   logradouro: string;
@@ -19,7 +18,8 @@ interface IReturnRequest {
   localidade: string;
   uf: string;
 }
-class SeachCep {
+
+export default {
   async searchAddressCep(cepSearch: string): Promise<IResponse> {
     try {
       const { data } = await axios.get<IReturnRequest>(
@@ -42,7 +42,5 @@ class SeachCep {
         "Ocorreu um erro ao Cadastrar seu endereço, tente novamente. Caso o erro persita, entre em contato com o suporte"
       );
     }
-  }
-}
-
-export { SeachCep };
+  },
+};

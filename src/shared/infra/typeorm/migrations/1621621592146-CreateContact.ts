@@ -8,7 +8,7 @@ export class CreateContact1621621592146 implements MigrationInterface {
         columns: [
           {
             name: "id",
-            type: "uuid",
+            type: "varchar",
             isPrimary: true,
           },
           {
@@ -31,7 +31,7 @@ export class CreateContact1621621592146 implements MigrationInterface {
           },
           {
             name: "doctor_id",
-            type: "uuid",
+            type: "varchar",
           },
         ],
         foreignKeys: [

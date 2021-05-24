@@ -1,8 +1,12 @@
+/* eslint-disable no-unused-expressions */
 import { getRepository, Repository } from "typeorm";
 
 import { ICreateDoctorDTO } from "@modules/doctor/dtos/ICreateDoctorDTO";
 import { Doctor } from "@modules/doctor/entities/Doctor";
-import { IDoctorRepository } from "@modules/doctor/repositories/IDoctorRepository";
+import {
+  IDoctorRepository,
+  IQueryParams,
+} from "@modules/doctor/repositories/IDoctorRepository";
 
 import { DoctorTypeorm } from "../entities/DoctorTypeorm";
 
@@ -11,6 +15,58 @@ class DoctorRepository implements IDoctorRepository {
 
   constructor() {
     this.repository = getRepository(DoctorTypeorm);
+  }
+  async findAvailable({
+    name,
+    city,
+    uf,
+    crm,
+    specialties,
+  }: IQueryParams): Promise<Doctor[]> {
+    const doctorsQuery = this.repository
+      .createQueryBuilder("d")
+      .where("d.isActive = :isActive", { isActive: true });
+
+    if (name) {
+      doctorsQuery.andWhere("d.name = :name", { name });
+    }
+
+    if (crm) {
+      doctorsQuery.andWhere("d.CRM = :crm", { crm });
+    }
+
+    if (city) {
+      doctorsQuery.leftJoinAndSelect(
+        "d.address",
+        "adresses",
+        "adresses.city = :city",
+        {
+          city,
+        }
+      ).alias;
+    }
+
+    if (uf) {
+      doctorsQuery.leftJoinAndSelect(
+        "d.address",
+        "adresses",
+        "adresses.uf = :uf",
+        {
+          uf,
+        }
+      ).alias;
+    }
+    if (specialties) {
+      doctorsQuery.innerJoinAndSelect(
+        "d.specialties",
+        "specialties",
+        "specialties.name IN (:...specialties)",
+        { specialties }
+      );
+    }
+
+    const doctors = await doctorsQuery.getMany();
+    return doctors;
   }
   async findById(id: string): Promise<Doctor | undefined> {
     const doctor = await this.repository.findOne(id);

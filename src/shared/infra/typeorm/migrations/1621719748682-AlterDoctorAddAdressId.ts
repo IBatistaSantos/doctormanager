@@ -11,7 +11,7 @@ export class AlterDoctorAddAdressId1621719748682 implements MigrationInterface {
       "doctors",
       new TableColumn({
         name: "address_id",
-        type: "uuid",
+        type: "varchar",
         isNullable: true,
       })
     );

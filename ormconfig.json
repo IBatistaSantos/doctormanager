@@ -1,9 +1,9 @@
 {
   "name": "default",
-  "type": "postgres",
-  "port": 5432,
+  "type": "mysql",
+  "port": 3306,
   "host": "localhost",
-  "username": "docker",
+  "username": "root",
   "password": "password",
   "database": "doctor_manager",
   "entities": ["./src/modules/**/infra/typeorm/entities/*.ts"],
