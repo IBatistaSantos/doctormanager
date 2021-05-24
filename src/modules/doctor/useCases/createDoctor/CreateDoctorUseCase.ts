@@ -54,8 +54,9 @@ class CreateDoctorUseCase {
     }
 
     if (cepSeach) {
+      const { searchAddressCep } = seachrCep;
       const { address, cep, city, neighborhood, uf, complement } =
-        await seachrCep.searchAddressCep(cepSeach);
+        await searchAddressCep(cepSeach);
       const addressSave = await this.addressRepository.create({
         address,
         cep,
