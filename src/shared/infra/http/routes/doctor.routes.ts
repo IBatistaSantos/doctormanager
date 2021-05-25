@@ -1,3 +1,4 @@
+import { celebrate, Joi, Segments } from "celebrate";
 import { Router } from "express";
 
 import { CreateDoctorController } from "@modules/doctor/useCases/createDoctor/CreateDoctorController";
@@ -11,9 +12,41 @@ const updateDoctorController = new UpdateDoctorController();
 const deleteDoctorController = new DeleteDoctorController();
 const listDoctorAvailableController = new ListDoctorAvailableController();
 
-doctorRoutes.post("/", createDoctorController.handle);
+doctorRoutes.post(
+  "/",
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      CRM: Joi.string().required(),
+      cep: Joi.string(),
+      specialties: Joi.array().min(2).required(),
+      contacts: Joi.object(),
+    },
+  }),
+  createDoctorController.handle
+);
 doctorRoutes.get("/available", listDoctorAvailableController.handle);
-doctorRoutes.delete("/:id", deleteDoctorController.handle);
-doctorRoutes.put("/:id", updateDoctorController.handle);
+doctorRoutes.delete(
+  "/:id",
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().required(),
+    },
+  }),
+  deleteDoctorController.handle
+);
+doctorRoutes.put(
+  "/:id",
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string(),
+      CRM: Joi.string(),
+      cep: Joi.string(),
+      specialties: Joi.array().min(2),
+      contacts: Joi.object(),
+    },
+  }),
+  updateDoctorController.handle
+);
 
 export { doctorRoutes };
